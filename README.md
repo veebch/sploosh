@@ -14,7 +14,7 @@ A [proportional integral derivative](https://en.wikipedia.org/wiki/PID_controlle
 - WGCD KY-040 Rotary Encoder
 - AZ delivery Soil Capacitance Sensor
 - A relay switch
-- A plug socket for the heating device. For cooking, we use one of [these](https://www.galaxus.ch/de/s2/product/rommelsbacher-ts1502-wasserkocher-8406453?supplier=406802)
+- A plug socket for the water pump
 - Wires Galore
 
 **Warning: Don't generate heat using something that dislikes being power-cycled a lot. This is GPL code, ie NO WARRANTY**
