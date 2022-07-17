@@ -17,7 +17,7 @@ A [proportional integral derivative](https://en.wikipedia.org/wiki/PID_controlle
 - A plug socket for the water pump
 - Wires Galore
 
-**Warning: Don't generate heat using something that dislikes being power-cycled a lot. This is GPL code, ie NO WARRANTY**
+**Warning: Don't pump water using something that dislikes being power-cycled a lot. This is GPL code, ie NO WARRANTY**
 
 # Installing Sploosh onto a Pico
 
