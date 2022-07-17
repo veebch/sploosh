@@ -19,7 +19,7 @@ A [proportional integral derivative](https://en.wikipedia.org/wiki/PID_controlle
 
 **Warning: Don't pump water using something that dislikes being power-cycled a lot. This is GPL code, ie NO WARRANTY**
 
-# Installing Sploosh onto a Pico
+# Installing sploosh onto a Pico
 
 First flash the board with the latest version of micropython. 
 
