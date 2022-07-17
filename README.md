@@ -43,7 +43,7 @@ All of the pins are listed in main.py. Note that the temperature sensor needed a
 
 TO DO: Draw wiring diagram.
 
-# Using Sploosh
+# Using sploosh
 
 Plug it in, pop the soil probe into the medium you are going to water, plug the watering device into the plug socket, pick a setpoint using the dial. That's it!
 
