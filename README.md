@@ -2,18 +2,17 @@
 
 [![YouTube Channel Views](https://img.shields.io/youtube/channel/views/UCz5BOU9J9pB_O0B8-rDjCWQ?label=YouTube&style=social)](https://www.youtube.com/channel/UCz5BOU9J9pB_O0B8-rDjCWQ)
 
-# Heat-o-matic
+# Sploosh
 
-A [proportional integral derivative](https://en.wikipedia.org/wiki/PID_controller) (PID) controller that will be used to run a home-made precision heater. PID is a fancy way of saying that the code plays a game of 'Warmer', 'Colder' to get something to a particular value (in our example, a particular temperature). The internet is littered with examples of these things, so it is primarily a didactic exercise that will use a few bits of code we've previously developed, and hopefully it will make us a little smarter along the way.
+A [proportional integral derivative](https://en.wikipedia.org/wiki/PID_controller) (PID) controller that will be used to run a plant waterer. PID is a fancy way of saying that the code plays a game of 'Warmer', 'Colder' to get something to a particular value (in our example, a particular temperature). The internet is littered with examples of these things, so it is primarily a didactic exercise that will use a few bits of code we've previously developed, and hopefully it will make us a little smarter along the way.
 
-(You can use the PID controller to regulate other things, depending on the sensor and device being powered. It just needs to measure something, and to be able to influence that measurement. People have used PID controllers to make robots follow lines, and other things I can't think of right now)
 
 # Hardware
 
 - Raspberry Pi Pico 
 - SSD1351 Waveshare OLED 
 - WGCD KY-040 Rotary Encoder
-- DS18B20 Stainless Steel Temperature Sensor (with 5K1 pull-up resistor)
+- AZ delivery Soil Capacitance Sensor
 - A relay switch
 - A plug socket for the heating device. For cooking, we use one of [these](https://www.galaxus.ch/de/s2/product/rommelsbacher-ts1502-wasserkocher-8406453?supplier=406802)
 - Wires Galore
