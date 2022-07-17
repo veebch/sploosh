@@ -39,9 +39,7 @@ substitute the device name to whatever the pico is on your system.
 
 # Wiring
 
-All of the pins are listed in main.py. Note that the temperature sensor needed a pull-up resistor on the signal. Also, the switch on the roatary encoder (that was being used as a means to toggle the UI) is disabled as it was being triggered by the relay.... this can probably be fixed with a capacitor. 
-
-TO DO: Draw wiring diagram.
+All of the pins are listed in main.py. The switch on the roatary encoder (that was being used as a means to toggle the UI) is disabled as it was being triggered by the relay.
 
 # Using sploosh
 
