@@ -1,5 +1,5 @@
-# main.py - a script for making a temperature regulating PID, running using a Raspberry Pi Pico
-# First prototype is using an OLED, rotary encoder and a relay switch (linked to heating device of some sort)
+# main.py - a script for making a plant watering thing, running using a Raspberry Pi Pico
+# First prototype is using an OLED, rotary encoder and a relay switch (linked to water pump device of some sort)
 # The display uses drivers made by Peter Hinch [link](https://github.com/peterhinch/micropython-nano-gui)
 
 # Released under the GPL 3.0
@@ -143,8 +143,6 @@ outB.irq(trigger = Pin.IRQ_RISING | Pin.IRQ_FALLING ,
               handler = encoder)
 
 
-# Look for soil moisture sensor (add OLED complaint if one can't be seen)
-
 height = 128  
 pdc = Pin(20, Pin.OUT, value=0)
 pcs = Pin(17, Pin.OUT, value=1)
@@ -244,3 +242,4 @@ async def main():
         await asyncio.sleep(.01)
         
 asyncio.run(main())
+
