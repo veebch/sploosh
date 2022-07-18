@@ -41,7 +41,7 @@ substitute the device name to whatever the pico is on your system.
 # Wiring
 
 All of the pins are listed in main.py. The switch on the roatary encoder (that was being used as a means to toggle the UI) is disabled as it was being triggered by the relay.
-- GPIO as follows:
+GPIO to peripherals as follows:
 
 | [Pico GPIO](https://www.elektronik-kompendium.de/sites/raspberry-pi/bilder/raspberry-pi-pico-gpio.png) | OLED |
 |-----------|------|
