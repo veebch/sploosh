@@ -12,7 +12,7 @@ A [proportional integral derivative](https://en.wikipedia.org/wiki/PID_controlle
 - Raspberry Pi Pico 
 - SSD1351 Waveshare OLED 
 - WGCD KY-040 Rotary Encoder
-- AZ-Delivery Soil Capacitance Sensor
+- AZ-Delivery Soil Moisture Sensor
 - A relay switch
 - A plug socket for the water pump
 - A cheap fish tank water pump
