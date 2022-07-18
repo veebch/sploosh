@@ -15,6 +15,7 @@ A [proportional integral derivative](https://en.wikipedia.org/wiki/PID_controlle
 - AZ-Delivery Soil Capacitance Sensor
 - A relay switch
 - A plug socket for the water pump
+- A cheap fish tank water pump
 - Wires Galore
 
 **Warning: Don't pump water using something that dislikes being power-cycled a lot. This is GPL code, ie NO WARRANTY**
