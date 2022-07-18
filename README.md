@@ -41,7 +41,7 @@ substitute the device name to whatever the pico is on your system.
 # Wiring
 
 All of the pins are listed in main.py. The switch on the roatary encoder (that was being used as a means to toggle the UI) is disabled as it was being triggered by the relay.
-- The OLED connects to the GPIO as follows:
+- GPIO as follows:
 
 | [Pico GPIO](https://www.elektronik-kompendium.de/sites/raspberry-pi/bilder/raspberry-pi-pico-gpio.png) | OLED |
 |-----------|------|
@@ -52,20 +52,17 @@ All of the pins are listed in main.py. The switch on the roatary encoder (that w
 |   21      | RST  |
 
 
-- The Rotary Encoder connects to the GPIO as follows:
 
 | [Pico GPIO](https://www.elektronik-kompendium.de/sites/raspberry-pi/bilder/raspberry-pi-pico-gpio.png) | Rotary Encoder |
 |-----------|----------------|
 |   2       | CLK            |
 |   3       | DT             |
 
-- The relay
 
 | [Pico GPIO](https://www.elektronik-kompendium.de/sites/raspberry-pi/bilder/raspberry-pi-pico-gpio.png) | Relay |
 |-----------|----------------|
 |   15       | Signal        |
 
-- The soil sensor
 
 | [Pico GPIO](https://www.elektronik-kompendium.de/sites/raspberry-pi/bilder/raspberry-pi-pico-gpio.png) | Soil Sensor |
 |-----------|----------------|
