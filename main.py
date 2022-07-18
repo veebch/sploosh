@@ -52,7 +52,7 @@ def splash(string):
 
 
 def encoder(pin):
-    # get global variables
+    # get global variables this would all be tidier if we use the encoder primitive - fix this
     global counter
     global direction
     global outA_last
@@ -242,4 +242,3 @@ async def main():
         await asyncio.sleep(.01)
         
 asyncio.run(main())
-
