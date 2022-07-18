@@ -11,12 +11,14 @@ from gui.core.writer import CWriter
 from gui.core.nanogui import refresh
 import utime
 from machine import Pin,I2C, SPI,ADC
-from rp2 import PIO, StateMachine, asm_pio
+#from rp2 import PIO, StateMachine, asm_pio
 import sys
 import math
 import gc
 # Display setup
 from drivers.ssd1351.ssd1351_16bit import SSD1351 as SSD
+import uasyncio as asyncio
+from primitives.pushbutton import Pushbutton
 
 def splash(string):
     wri = CWriter(ssd,freesans20, fgcolor=SSD.rgb(50,50,0),bgcolor=0, verbose=False )
@@ -87,23 +89,15 @@ def encoder(pin):
 
 # interrupt handler function (IRQ) for SW (switch) pin
 def button(pin):
-    # get global variable
-    global button_last_state
-    global button_current_state
-    global powerup
-    if button_current_state != button_last_state:
-        utime.sleep(.2)       
-        button_last_state = button_current_state
-#        powerup = not powerup                    # Toggle power flag - disabled for now
-        print('Button:'+str(powerup))
+    print('Button short press:'+str(powerup))
     return
 
 # Screen to display on OLED during heating
-def displaynum(num,temperature):
+def displaynum(num,value):
     #This needs to be fast for nice responsive increments
     #100 increments?
     ssd.fill(0)
-    delta=num-temperature
+    delta=num-value
     text=SSD.rgb(0,255,0)
     if delta>=.5:
         text=SSD.rgb(165,42,42)
@@ -114,7 +108,7 @@ def displaynum(num,temperature):
     wri.printstring(str("{:.0f}".format(num)))
     wrimem = CWriter(ssd,freesans20, fgcolor=SSD.rgb(255,255,255),bgcolor=0)
     CWriter.set_textpos(ssd,100 ,0)  
-    wrimem.printstring('now at: '+str("{:.0f}".format(temperature))+"/ 10")
+    wrimem.printstring('now at: '+str("{:.0f}".format(value))+"/ 10")
     CWriter.set_textpos(ssd, 0,0)
     wrimem = CWriter(ssd,freesans20, fgcolor=SSD.rgb(155,155,155),bgcolor=0)
     wrimem.printstring('moisture')
@@ -134,8 +128,8 @@ def beanaproblem(string):
     
     
 # define encoder pins 
-
-switch = Pin(4, mode=Pin.IN, pull = Pin.PULL_UP) # inbuilt switch on the rotary encoder, ACTIVE LOW
+btn = Pin(4, Pin.IN, Pin.PULL_UP)  # Adapt for your hardware
+pb = Pushbutton(btn, suppress=True)
 outA = Pin(2, mode=Pin.IN) # Pin CLK of encoder
 outB = Pin(3, mode=Pin.IN) # Pin DT of encoder
 # Attach interrupt to Pins
@@ -147,10 +141,6 @@ outA.irq(trigger = Pin.IRQ_RISING | Pin.IRQ_FALLING,
 # attach interrupt to the outB pin ( DT pin of encoder module )
 outB.irq(trigger = Pin.IRQ_RISING | Pin.IRQ_FALLING ,
               handler = encoder)
-
-# attach interrupt to the switch pin ( SW pin of encoder module )
-switch.irq(trigger = Pin.IRQ_FALLING ,
-           handler = button)
 
 
 # Look for soil moisture sensor (add OLED complaint if one can't be seen)
@@ -176,8 +166,7 @@ splash("sploosh")
 
 # Define relay and LED pins
 
-ledPin = Pin(25, mode = Pin.OUT, value = 0) # Onboard led on GPIO 25
-
+ledPin = Pin(25, mode = Pin.OUT, value = 0) # Onboard led on GPIO 25, not currently used, but who doesnt love a controllable led?
 
 # define global variables
 counter = 0   # counter updates when encoder rotates
@@ -185,82 +174,73 @@ direction = "" # empty string for registering direction change
 outA_last = 0 # registers the last state of outA pin / CLK pin
 outA_current = 0 # registers the current state of outA pin / CLK pin
 
-button_last_state = False # initial state of encoder's button 
-button_current_state = "" # empty string ---> current state of button
-
 # Read the last state of CLK pin in the initialisaton phase of the program 
 outA_last = outA.value() # lastStateCLK
 
-# interrupt handler function (IRQ) for CLK and DT pins
-
-
 # Main Logic
-pin=0
-counter= 6
-integral = 0
-lastupdate = utime.time()  
-refresh(ssd, True)  # Initialise and clear display.
-wetness = machine.ADC(26)
-lasterror = 0
-# The Tweakable values that will help tune for our use case. TODO: Make accessible via menu on OLED
-checkin = 5
-# Stolen From Reddit: In terms of steering a ship:
-# Kp is steering harder the further off course you are,
-# Ki is steering into the wind to counteract a drift
-# Kd is slowing the turn as you approach your course
-Kp=2   # Proportional term - Basic steering (This is the first parameter you should tune for a particular setup)
-Ki=0   # Integral term - Compensate for heat loss by vessel
-Kd=0  # Derivative term - to prevent overshoot due to inertia - if it is zooming towards setpoint this
-         # will cancel out the proportional term due to the large negative gradient
-output=0
-offstate=False
-# PID loop - Default behaviour
-powerup = True
-while True:
-    if powerup:
-        try:
-            counter=encoder(pin)
-            # Get wetness
-            howdry = 10-round(10*wetness.read_u16()/65536)
-            print(howdry)
-            temp = howdry # Wetness
-            displaynum(counter,float(temp))
-            button_last_state = False # reset button last state to false again ,
-                                      # totally optional and application dependent,
-                                      # can also be done from other subroutines
-                                      # or from the main loop
-            now = utime.time()
-            dt= now-lastupdate
-            if output<100 and offstate == False and dt > checkin * round(output)/100 :
-                relaypin = Pin(15, mode = Pin.OUT, value =0 )
-                offstate= True
-                utime.sleep(.1)
-            if dt > checkin:
-                error=counter-temp
-                integral = integral + dt * error
-                derivative = (error - lasterror)/dt
-                output = Kp * error + Ki * integral + Kd * derivative
-                print(str(output)+"= Kp term: "+str(Kp*error)+" + Ki term:" + str(Ki*integral) + "+ Kd term: " + str(Kd*derivative))
-                output = max(min(100, output), 0) # Clamp output between 0 and 100
-                if error>.5:
-                    output=100
-                print(output)
-                if output>0:  
-                    relaypin = Pin(15, mode = Pin.OUT, value =1 )
-                    offstate = False
-                else:
+async def main():
+    short_press = pb.release_func(button, ())
+    pin=0
+    integral = 0
+    lastupdate = utime.time()  
+    refresh(ssd, True)  # Initialise and clear display.
+    wetness = machine.ADC(26)
+    lasterror = 0
+    # The Tweakable values that will help tune for our use case. TODO: Make accessible via menu on OLED
+    checkin = 5
+    # Stolen From Reddit: In terms of steering a ship:
+    # Kp is steering harder the further off course you are,
+    # Ki is steering into the wind to counteract a drift
+    # Kd is slowing the turn as you approach your course
+    Kp=2   # Proportional term - Basic steering (This is the first parameter you should tune for a particular setup)
+    Ki=0   # Integral term - Compensate for heat loss by vessel
+    Kd=0  # Derivative term - to prevent overshoot due to inertia - if it is zooming towards setpoint this
+          # will cancel out the proportional term due to the large negative gradient
+    output=0
+    offstate=False
+    # PID loop - Default behaviour
+    powerup = True
+    while True:
+        if powerup:
+            try:
+                counter=encoder(pin)
+                # Get wetness
+                imwet=wetness.read_u16()
+                howdry = 10-round(10*imwet/65536)+1
+                print(imwet)
+                temp = howdry # Wetness
+                displaynum(counter,float(temp))
+                now = utime.time()
+                dt= now-lastupdate
+                if output<100 and offstate == False and dt > checkin * round(output)/100 :
                     relaypin = Pin(15, mode = Pin.OUT, value =0 )
-                    offstate = True
-                utime.sleep(.1)
-                lastupdate = now
-                lasterror = error
-        except Exception as e:
-            # Put something to output to OLED screen
-            beanaproblem('error.')
-            print('error encountered:'+str(e))
-            utime.sleep(checkin)
-    else:
-        if button_last_state == False:  # To prevent clearing on every cycle when power off
-            refresh(ssd, True)  # Clear any prior image
-            relaypin = Pin(15, mode = Pin.OUT, value =0 ) 
+                    offstate= True
+                    utime.sleep(.1)
+                if dt > checkin:
+                    error=counter-temp
+                    integral = integral + dt * error
+                    derivative = (error - lasterror)/dt
+                    output = Kp * error + Ki * integral + Kd * derivative
+                    print(str(output)+"= Kp term: "+str(Kp*error)+" + Ki term:" + str(Ki*integral) + "+ Kd term: " + str(Kd*derivative))
+                    output = max(min(100, output), 0) # Clamp output between 0 and 100
+                    print(output)
+                    if output>0:  
+                        relaypin = Pin(15, mode = Pin.OUT, value =1 )
+                        offstate = False
+                    else:
+                        relaypin = Pin(15, mode = Pin.OUT, value =0 )
+                        offstate = True
+                    utime.sleep(.1)
+                    lastupdate = now
+                    lasterror = error  
+            except Exception as e:
+                # Put something to output to OLED screen
+                beanaproblem('error.')
+                print('error encountered:'+str(e))
+                utime.sleep(checkin)
+        else:
+                refresh(ssd, True)  # Clear any prior image
+                relaypin = Pin(15, mode = Pin.OUT, value =0 )
+        await asyncio.sleep(.01)
         
+asyncio.run(main())
