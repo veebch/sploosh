@@ -88,8 +88,8 @@ def encoder(pin):
     
 
 # interrupt handler function (IRQ) for SW (switch) pin
-def button(pin):
-    print('Button short press:'+str(powerup))
+def button():
+    print('Button short press:')
     return
 
 # Screen to display on OLED during heating
