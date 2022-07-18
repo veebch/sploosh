@@ -15,7 +15,6 @@ from machine import Pin,I2C, SPI,ADC, reset
 import sys
 import math
 import gc
-# Display setup
 from drivers.ssd1351.ssd1351_16bit import SSD1351 as SSD
 import uasyncio as asyncio
 from primitives.pushbutton import Pushbutton
@@ -248,4 +247,5 @@ async def main():
         await asyncio.sleep(.01)
         
 asyncio.run(main())
+
 
