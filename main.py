@@ -10,7 +10,7 @@ import gui.fonts.quantico40 as quantico40
 from gui.core.writer import CWriter
 from gui.core.nanogui import refresh
 import utime
-from machine import Pin,I2C, SPI,ADC
+from machine import Pin,I2C, SPI,ADC, reset
 #from rp2 import PIO, StateMachine, asm_pio
 import sys
 import math
@@ -87,9 +87,14 @@ def encoder(pin):
     return(counter)
     
 
-# interrupt handler function (IRQ) for SW (switch) pin
+# function for short button press - currently just a placeholder
 def button():
-    print('Button short press:')
+    print('Button short press: Boop')
+    return
+
+# function for long button press - currently just a placeholder
+def buttonlong():
+    print('Button long press: Reset')
     return
 
 # Screen to display on OLED during heating
@@ -178,6 +183,7 @@ outA_last = outA.value() # lastStateCLK
 # Main Logic
 async def main():
     short_press = pb.release_func(button, ())
+    long_press = pb.long_func(buttonlong, ())
     pin=0
     integral = 0
     lastupdate = utime.time()  
@@ -242,3 +248,4 @@ async def main():
         await asyncio.sleep(.01)
         
 asyncio.run(main())
+
