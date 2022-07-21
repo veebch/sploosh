@@ -211,10 +211,9 @@ async def main():
                 counter=encoder(pin)
                 # Get wetness
                 imwet=wetness.read_u16()
-                howdry = min(10,max(0,10*(imwet-calibratedry)/(calibratewet-calibratedry))) # linear relationship between ADC and wetness, clamped between 0, 10
-                print(imwet, howdry)
-                temp = howdry # Wetness
-                displaynum(counter,float(temp))
+                howwet = min(10,max(0,10*(imwet-calibratedry)/(calibratewet-calibratedry))) # linear relationship between ADC and wetness, clamped between 0, 10
+                print(imwet, howwet)
+                displaynum(counter,howwet)
                 now = utime.time()
                 dt= now-lastupdate
                 if output<100 and offstate == False and dt > checkin * round(output)/100 :
@@ -222,7 +221,7 @@ async def main():
                     offstate= True
                     utime.sleep(.1)
                 if dt > checkin:
-                    error=counter-temp
+                    error=counter-howwet
                     integral = integral + dt * error
                     derivative = (error - lasterror)/dt
                     output = Kp * error + Ki * integral + Kd * derivative
