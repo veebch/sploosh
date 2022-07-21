@@ -211,7 +211,7 @@ async def main():
                 counter=encoder(pin)
                 # Get wetness
                 imwet=wetness.read_u16()
-                howdry = 10*(imwet-calibratedry)/(calibratewet-calibratedry)
+                howdry = min(10,max(0,10*(imwet-calibratedry)/(calibratewet-calibratedry))) # linear relationship between ADC and wetness, clamped between 0, 10
                 print(imwet, howdry)
                 temp = howdry # Wetness
                 displaynum(counter,float(temp))
