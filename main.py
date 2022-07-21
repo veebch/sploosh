@@ -123,7 +123,7 @@ def displaynum(num,value):
 
 def beanaproblem(string):
     refresh(ssd, True)  # Clear any prior image
-    wri = CWriter(ssd,freesans20, fgcolor=SSD.rgb(25*x,25*x,25*x),bgcolor=0, verbose=False)
+    wri = CWriter(ssd,freesans20, fgcolor=SSD.rgb(250,250,250),bgcolor=0, verbose=False)
     CWriter.set_textpos(ssd, 55,25)
     wri.printstring(string)
     ssd.show()
@@ -190,6 +190,8 @@ async def main():
     wetness = machine.ADC(26)
     lasterror = 0
     # The Tweakable values that will help tune for our use case. TODO: Make accessible via menu on OLED
+    calibratewet=20000 # ADC value for a very wet thing
+    calibratedry=50000 # ADC value for a very dry thing
     checkin = 5
     # Stolen From Reddit: In terms of steering a ship:
     # Kp is steering harder the further off course you are,
@@ -209,8 +211,8 @@ async def main():
                 counter=encoder(pin)
                 # Get wetness
                 imwet=wetness.read_u16()
-                howdry = 10-round(10*imwet/65536)+1
-                print(imwet)
+                howdry = 10*(imwet-calibratedry)/(calibratewet-calibratedry)
+                print(imwet, howdry)
                 temp = howdry # Wetness
                 displaynum(counter,float(temp))
                 now = utime.time()
@@ -247,5 +249,6 @@ async def main():
         await asyncio.sleep(.01)
         
 asyncio.run(main())
+
 
 
