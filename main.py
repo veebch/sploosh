@@ -191,7 +191,7 @@ async def main():
     lasterror = 0
     # The Tweakable values that will help tune for our use case. TODO: Make accessible via menu on OLED
     calibratewet=20000 # ADC value for a very wet thing
-    calibratedry=50000 # ADC value for a very dry thing
+    calibratedry=45000 # ADC value for a very dry thing
     checkin = 5
     # Stolen From Reddit: In terms of steering a ship:
     # Kp is steering harder the further off course you are,
@@ -202,52 +202,47 @@ async def main():
     Kd=0  # Derivative term - to prevent overshoot due to inertia - if it is zooming towards setpoint this
           # will cancel out the proportional term due to the large negative gradient
     output=0
-    offstate=False
     # PID loop - Default behaviour
-    powerup = True
     while True:
-        if powerup:
-            try:
-                counter=encoder(pin)
-                # Get wetness
-                imwet=wetness.read_u16()
-                howwet = min(10,max(0,10*(imwet-calibratedry)/(calibratewet-calibratedry))) # linear relationship between ADC and wetness, clamped between 0, 10
-                print(imwet, howwet)
-                displaynum(counter,howwet)
-                now = utime.time()
-                dt= now-lastupdate
-                if output<100 and offstate == False and dt > checkin * round(output)/100 :
+        try:
+            counter=encoder(pin)
+            # Get wetness
+            imwet=wetness.read_u16()
+            howwet = min(10,max(0,10*(imwet-calibratedry)/(calibratewet-calibratedry))) # linear relationship between ADC and wetness, clamped between 0, 10
+            print(imwet, howwet)
+            displaynum(counter,howwet)
+            now = utime.time()
+            dt= now-lastupdate
+            if output<100 and offstate == False and dt > checkin * round(output)/100 :
+                relaypin = Pin(15, mode = Pin.OUT, value =0 )
+                offstate= True
+                utime.sleep(.1)
+            if dt > checkin:
+                error=counter-howwet
+                integral = integral + dt * error
+                derivative = (error - lasterror)/dt
+                output = Kp * error + Ki * integral + Kd * derivative
+                print(str(output)+"= Kp term: "+str(Kp*error)+" + Ki term:" + str(Ki*integral) + "+ Kd term: " + str(Kd*derivative))
+                output = max(min(100, output), 0) # Clamp output between 0 and 100
+                print(output)
+                if output>0:  
+                    relaypin = Pin(15, mode = Pin.OUT, value =1 )
+                    offstate = False
+                else:
                     relaypin = Pin(15, mode = Pin.OUT, value =0 )
-                    offstate= True
-                    utime.sleep(.1)
-                if dt > checkin:
-                    error=counter-howwet
-                    integral = integral + dt * error
-                    derivative = (error - lasterror)/dt
-                    output = Kp * error + Ki * integral + Kd * derivative
-                    print(str(output)+"= Kp term: "+str(Kp*error)+" + Ki term:" + str(Ki*integral) + "+ Kd term: " + str(Kd*derivative))
-                    output = max(min(100, output), 0) # Clamp output between 0 and 100
-                    print(output)
-                    if output>0:  
-                        relaypin = Pin(15, mode = Pin.OUT, value =1 )
-                        offstate = False
-                    else:
-                        relaypin = Pin(15, mode = Pin.OUT, value =0 )
-                        offstate = True
-                    utime.sleep(.1)
-                    lastupdate = now
-                    lasterror = error  
-            except Exception as e:
-                # Put something to output to OLED screen
-                beanaproblem('error.')
-                print('error encountered:'+str(e))
-                utime.sleep(checkin)
+                    offstate = True
+                utime.sleep(.1)
+                lastupdate = now
+                lasterror = error  
+        except Exception as e:
+            # Put something to output to OLED screen
+            beanaproblem('error.')
+            print('error encountered:'+str(e))
+            utime.sleep(checkin)
         else:
                 refresh(ssd, True)  # Clear any prior image
                 relaypin = Pin(15, mode = Pin.OUT, value =0 )
         await asyncio.sleep(.01)
         
 asyncio.run(main())
-
-
 
