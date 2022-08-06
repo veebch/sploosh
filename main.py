@@ -187,7 +187,7 @@ async def main():
     integral = 0
     lastupdate = utime.time()  
     refresh(ssd, True)  # Initialise and clear display.
-    wetness = machine.ADC(26)
+    wetness = ADC(26)
     lasterror = 0
     # The Tweakable values that will help tune for our use case. TODO: Make accessible via menu on OLED
     calibratewet=20000 # ADC value for a very wet thing
