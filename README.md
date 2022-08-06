@@ -12,8 +12,8 @@ A [proportional integral derivative](https://en.wikipedia.org/wiki/PID_controlle
 # Hardware
 
 - Raspberry Pi Pico 
-- SSD1351 Waveshare OLED 
-- WGCD KY-040 Rotary Encoder
+- SSD1351 Waveshare OLED (not needed if you're making the bare bones version)
+- WGCD KY-040 Rotary Encoder (not needed if you're making the bare bones version)
 - A Capacitive Soil Moisture Sensor
 - A relay switch
 - A plug socket for the water pump
@@ -52,7 +52,7 @@ GPIO to peripherals as follows:
 |   17      | CS  |
 |   20       | DC  |
 |   21      | RST  |
-
+(not needed if you're making the bare bones version)
 
 
 | [Pico GPIO](https://www.elektronik-kompendium.de/sites/raspberry-pi/bilder/raspberry-pi-pico-gpio.png) | Rotary Encoder |
@@ -60,7 +60,7 @@ GPIO to peripherals as follows:
 |   2       | CLK            |
 |   3       | DT             |
 |   4       | SW             |
-
+(not needed if you're making the bare bones version)
 
 
 | [Pico GPIO](https://www.elektronik-kompendium.de/sites/raspberry-pi/bilder/raspberry-pi-pico-gpio.png) | Relay |
