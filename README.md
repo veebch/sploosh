@@ -52,6 +52,7 @@ GPIO to peripherals as follows:
 |   17      | CS  |
 |   20       | DC  |
 |   21      | RST  |
+
 (not needed if you're making the bare bones version)
 
 
@@ -60,6 +61,7 @@ GPIO to peripherals as follows:
 |   2       | CLK            |
 |   3       | DT             |
 |   4       | SW             |
+
 (not needed if you're making the bare bones version)
 
 
