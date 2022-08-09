@@ -12,7 +12,7 @@ import gc
 # The Tweakable values that will help tune for our use case
 calibratewet=20000 # ADC value for a very wet thing
 calibratedry=50000 # ADC value for a very dry thing
-checkin = 5
+checkin = 5 # Time interval (seconds) for each cycle of monitoring loop
 # PID Parameters
 # Stolen From Reddit: In terms of steering a ship:
 # Kp is steering harder the further off course you are,
