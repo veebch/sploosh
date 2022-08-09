@@ -14,7 +14,7 @@ calibratewet=20000 # ADC value for a very wet thing
 calibratedry=50000 # ADC value for a very dry thing
 checkin = 5 # Time interval (seconds) for each cycle of monitoring loop
 # PID Parameters
-# Stolen From Reddit: In terms of steering a ship:
+# Description Stolen From Reddit: In terms of steering a ship:
 # Kp is steering harder the further off course you are,
 # Ki is steering into the wind to targetact a drift
 # Kd is slowing the turn as you approach your course
