@@ -9,6 +9,19 @@ from machine import Pin,I2C,ADC
 import utime
 import gc
 
+# The Tweakable values that will help tune for our use case
+calibratewet=20000 # ADC value for a very wet thing
+calibratedry=50000 # ADC value for a very dry thing
+checkin = 5
+# PID Parameters
+# Stolen From Reddit: In terms of steering a ship:
+# Kp is steering harder the further off course you are,
+# Ki is steering into the wind to targetact a drift
+# Kd is slowing the turn as you approach your course
+Kp=2   # Proportional term - Basic steering (This is the first parameter you should tune for a particular setup)
+Ki=0   # Integral term - Compensate for heat loss by vessel
+Kd=0  # Derivative term - to prevent overshoot due to inertia - if it is zooming towards setpoint this
+      # will cancel out the proportional term due to the large negative gradient
 target=6 # Target Wetness For Plant
 
 # Initialise Pins
@@ -26,19 +39,6 @@ lastupdate = utime.time()
 lasterror = 0
 output=0
 offstate=True
-# The Tweakable values that will help tune for our use case
-calibratewet=20000 # ADC value for a very wet thing
-calibratedry=50000 # ADC value for a very dry thing
-checkin = 5
-# PID Parameters
-# Stolen From Reddit: In terms of steering a ship:
-# Kp is steering harder the further off course you are,
-# Ki is steering into the wind to targetact a drift
-# Kd is slowing the turn as you approach your course
-Kp=2   # Proportional term - Basic steering (This is the first parameter you should tune for a particular setup)
-Ki=0   # Integral term - Compensate for heat loss by vessel
-Kd=0  # Derivative term - to prevent overshoot due to inertia - if it is zooming towards setpoint this
-      # will cancel out the proportional term due to the large negative gradient
 # PID infinite loop 
 while True:
     try:
