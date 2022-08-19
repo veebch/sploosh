@@ -34,7 +34,7 @@ and move into the repository directory
 
      cd sploosh
 
-If (*and only if*) you are using the bare-bones version (no screen or rotary encoder)
+If (**and only if**) you are using the bare-bones version (no screen or rotary encoder)
 
      mv main.py withscreen.py
      mv barebones.py main.py
