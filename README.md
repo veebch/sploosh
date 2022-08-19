@@ -22,7 +22,7 @@ A [proportional integral derivative](https://en.wikipedia.org/wiki/PID_controlle
 
 **Warning: Don't pump water using something that dislikes being power-cycled a lot. This is GPL code, ie NO WARRANTY**
 
-# Installing sploosh onto a Pico
+# Installing onto a Pico
 
 First flash the board with the latest version of micropython. 
 
@@ -79,7 +79,7 @@ GPIO to peripherals as follows:
 |-----------|----------------|
 |   26       | A0             |
 
-# Using sploosh
+# Running
 
 Plug it in, pop the soil probe into the medium you are going to water, plug the watering device into the plug socket, pick a setpoint using the dial. That's it!
 
