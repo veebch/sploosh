@@ -34,11 +34,16 @@ and move into the repository directory
 
      cd sploosh
 
+If (*and only if*) you are using the bare-bones version (no screen or rotary encoder)
+
+     mv main.py withscreen.py
+     mv barebones.py main.py
+
 There are a few files to copy to the pico, [ampy](https://learn.adafruit.com/micropython-basics-load-files-and-run-code/install-ampy) is a good way to do it.
 
      sudo ampy -p /dev/ttyACM0 put ./
      
-substitute the device name to whatever the pico is on your system.
+substitute the device name to whatever the pico is on your system. 
 
 # Wiring
 
