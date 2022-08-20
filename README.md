@@ -82,7 +82,7 @@ GPIO to peripherals as follows:
 
 Plug it in, pop the soil probe into the medium you are going to water, plug the watering device into the plug socket, pick a setpoint using the dial. That's it!
 
-There's a time-lapse video of it running below:
+There's a video of it running below:
 
 [![Mod demo](http://img.youtube.com/vi/WVijoh-hqkw/0.jpg)](http://www.youtube.com/watch?v=WVijoh-hqkw "Video Title")
 
