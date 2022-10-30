@@ -10,7 +10,7 @@ import gui.fonts.quantico40 as quantico40
 from gui.core.writer import CWriter
 from gui.core.nanogui import refresh
 import utime
-from machine import Pin,I2C, SPI,ADC, reset
+from machine import Pin, I2C, SPI, ADC, reset
 #from rp2 import PIO, StateMachine, asm_pio
 import sys
 import math
@@ -19,34 +19,41 @@ from drivers.ssd1351.ssd1351_16bit import SSD1351 as SSD
 import uasyncio as asyncio
 from primitives.pushbutton import Pushbutton
 
+
 def splash(string):
-    wri = CWriter(ssd,freesans20, fgcolor=SSD.rgb(50,50,0),bgcolor=0, verbose=False )
-    CWriter.set_textpos(ssd, 90,25)
+    wri = CWriter(ssd, freesans20, fgcolor=SSD.rgb(
+        50, 50, 0), bgcolor=0, verbose=False)
+    CWriter.set_textpos(ssd, 90, 25)
     wri.printstring('veeb.ch/')
     ssd.show()
     utime.sleep(.3)
     for x in range(10):
-        wri = CWriter(ssd,freesans20, fgcolor=SSD.rgb(25*x,25*x,25*x),bgcolor=0, verbose=False)
-        CWriter.set_textpos(ssd, 55,25)
+        wri = CWriter(ssd, freesans20, fgcolor=SSD.rgb(
+            25*x, 25*x, 25*x), bgcolor=0, verbose=False)
+        CWriter.set_textpos(ssd, 55, 25)
         wri.printstring(string)
-        wri = CWriter(ssd,freesans20, fgcolor=SSD.rgb(50-x,50-x,0),bgcolor=0, verbose=False )
-        CWriter.set_textpos(ssd, 90,25)
+        wri = CWriter(ssd, freesans20, fgcolor=SSD.rgb(
+            50-x, 50-x, 0), bgcolor=0, verbose=False)
+        CWriter.set_textpos(ssd, 90, 25)
         wri.printstring('veeb.ch/')
         ssd.show()
     utime.sleep(2)
-    for x in range(10,0,-1):
-        wri = CWriter(ssd,freesans20, fgcolor=SSD.rgb(25*x,25*x,25*x),bgcolor=0, verbose=False)
-        CWriter.set_textpos(ssd, 55,25)
+    for x in range(10, 0, -1):
+        wri = CWriter(ssd, freesans20, fgcolor=SSD.rgb(
+            25*x, 25*x, 25*x), bgcolor=0, verbose=False)
+        CWriter.set_textpos(ssd, 55, 25)
         wri.printstring(string)
-        wri = CWriter(ssd,freesans20, fgcolor=SSD.rgb(50-x,50-x,0),bgcolor=0, verbose=False )
-        CWriter.set_textpos(ssd, 90,25)
+        wri = CWriter(ssd, freesans20, fgcolor=SSD.rgb(
+            50-x, 50-x, 0), bgcolor=0, verbose=False)
+        CWriter.set_textpos(ssd, 90, 25)
         wri.printstring('veeb.ch/')
         ssd.show()
-    wri = CWriter(ssd,freesans20, fgcolor=SSD.rgb(50,50,0),bgcolor=0, verbose=False )
-    CWriter.set_textpos(ssd, 90,25)
+    wri = CWriter(ssd, freesans20, fgcolor=SSD.rgb(
+        50, 50, 0), bgcolor=0, verbose=False)
+    CWriter.set_textpos(ssd, 90, 25)
     wri.printstring('veeb.ch/')
     ssd.show()
-    utime.sleep(.3)   
+    utime.sleep(.3)
     return
 
 
@@ -57,7 +64,7 @@ def encoder(pin):
     global outA_last
     global outA_current
     global outA
-    
+
     # read the value of current state of outA pin / CLK pin
     try:
         outA_current = outA.value()
@@ -74,17 +81,17 @@ def encoder(pin):
             counter += .5
         else:
             counter -= .5
-        
+
         # print the data on screen
         #print("Counter : ", counter, "     |   Direction : ",direction)
-        #print("\n")
-    
+        # print("\n")
+
     # update the last state of outA pin / CLK pin with the current state
     outA_last = outA_current
-    counter=min(9,counter)
-    counter=max(0,counter)
+    counter = min(9, counter)
+    counter = max(0, counter)
     return(counter)
-    
+
 
 # function for short button press - currently just a placeholder
 def button():
@@ -92,74 +99,83 @@ def button():
     return
 
 # function for long button press - currently just a placeholder
+
+
 def buttonlong():
     print('Button long press: Reset')
     return
 
 # Screen to display on OLED during heating
-def displaynum(num,value):
-    #This needs to be fast for nice responsive increments
-    #100 increments?
+
+
+def displaynum(num, value):
+    # This needs to be fast for nice responsive increments
+    # 100 increments?
     ssd.fill(0)
-    delta=num-value
-    text=SSD.rgb(0,255,0)
-    if delta>=.5:
-        text=SSD.rgb(165,42,42)
-    if delta<=-.5:
-        text=SSD.rgb(0,255,255)
-    wri = CWriter(ssd,quantico40, fgcolor=text,bgcolor=0)
-    CWriter.set_textpos(ssd, 50,0)  # verbose = False to suppress console output
+    delta = num-value
+    text = SSD.rgb(0, 255, 0)
+    if delta >= .5:
+        text = SSD.rgb(165, 42, 42)
+    if delta <= -.5:
+        text = SSD.rgb(0, 255, 255)
+    wri = CWriter(ssd, quantico40, fgcolor=text, bgcolor=0)
+    # verbose = False to suppress console output
+    CWriter.set_textpos(ssd, 50, 0)
     wri.printstring(str("{:.0f}".format(num)))
-    wrimem = CWriter(ssd,freesans20, fgcolor=SSD.rgb(255,255,255),bgcolor=0)
-    CWriter.set_textpos(ssd,100 ,0)  
+    wrimem = CWriter(ssd, freesans20, fgcolor=SSD.rgb(
+        255, 255, 255), bgcolor=0)
+    CWriter.set_textpos(ssd, 100, 0)
     wrimem.printstring('now at: '+str("{:.0f}".format(value))+"/ 10")
-    CWriter.set_textpos(ssd, 0,0)
-    wrimem = CWriter(ssd,freesans20, fgcolor=SSD.rgb(155,155,155),bgcolor=0)
+    CWriter.set_textpos(ssd, 0, 0)
+    wrimem = CWriter(ssd, freesans20, fgcolor=SSD.rgb(
+        155, 155, 155), bgcolor=0)
     wrimem.printstring('moisture')
-    CWriter.set_textpos(ssd, 20,0)  
-    wrimem.printstring('target:') 
+    CWriter.set_textpos(ssd, 20, 0)
+    wrimem.printstring('target:')
     ssd.show()
     return
 
+
 def beanaproblem(string):
     refresh(ssd, True)  # Clear any prior image
-    wri = CWriter(ssd,freesans20, fgcolor=SSD.rgb(250,250,250),bgcolor=0, verbose=False)
-    CWriter.set_textpos(ssd, 55,25)
+    wri = CWriter(ssd, freesans20, fgcolor=SSD.rgb(
+        250, 250, 250), bgcolor=0, verbose=False)
+    CWriter.set_textpos(ssd, 55, 25)
     wri.printstring(string)
     ssd.show()
-    relaypin = Pin(15, mode = Pin.OUT, value =0 )
+    relaypin = Pin(15, mode=Pin.OUT, value=0)
     utime.sleep(2)
-    
-    
-# define encoder pins 
+
+
+# define encoder pins
 btn = Pin(4, Pin.IN, Pin.PULL_UP)  # Adapt for your hardware
 pb = Pushbutton(btn, suppress=True)
-outA = Pin(2, mode=Pin.IN) # Pin CLK of encoder
-outB = Pin(3, mode=Pin.IN) # Pin DT of encoder
+outA = Pin(2, mode=Pin.IN)  # Pin CLK of encoder
+outB = Pin(3, mode=Pin.IN)  # Pin DT of encoder
 # Attach interrupt to Pins
 
 # attach interrupt to the outA pin ( CLK pin of encoder module )
-outA.irq(trigger = Pin.IRQ_RISING | Pin.IRQ_FALLING,
-              handler = encoder)
+outA.irq(trigger=Pin.IRQ_RISING | Pin.IRQ_FALLING,
+         handler=encoder)
 
 # attach interrupt to the outB pin ( DT pin of encoder module )
-outB.irq(trigger = Pin.IRQ_RISING | Pin.IRQ_FALLING ,
-              handler = encoder)
+outB.irq(trigger=Pin.IRQ_RISING | Pin.IRQ_FALLING,
+         handler=encoder)
 
 
-height = 128  
+height = 128
 pdc = Pin(20, Pin.OUT, value=0)
 pcs = Pin(17, Pin.OUT, value=1)
 prst = Pin(21, Pin.OUT, value=1)
 spi = SPI(0,
-                  baudrate=10000000,
-                  polarity=1,
-                  phase=1,
-                  bits=8,
-                  firstbit=SPI.MSB,
-                  sck=Pin(18),
-                  mosi=Pin(19),
-                  miso=Pin(16))
+          baudrate=10000000,
+          polarity=1,
+          phase=1,
+          bits=8,
+          firstbit=SPI.MSB,
+          sck=Pin(18),
+          mosi=Pin(19),
+          miso=Pin(16))
 gc.collect()  # Precaution before instantiating framebuf
 
 ssd = SSD(spi, pcs, pdc, prst, height)  # Create a display instance
@@ -168,86 +184,92 @@ splash("sploosh")
 
 # Define relay and LED pins
 
-ledPin = Pin(25, mode = Pin.OUT, value = 0) # Onboard led on GPIO 25, not currently used, but who doesnt love a controllable led?
+# Onboard led on GPIO 25, not currently used, but who doesnt love a controllable led?
+ledPin = Pin(25, mode=Pin.OUT, value=0)
 
 # define global variables
 counter = 0   # counter updates when encoder rotates
-direction = "" # empty string for registering direction change
-outA_last = 0 # registers the last state of outA pin / CLK pin
-outA_current = 0 # registers the current state of outA pin / CLK pin
+direction = ""  # empty string for registering direction change
+outA_last = 0  # registers the last state of outA pin / CLK pin
+outA_current = 0  # registers the current state of outA pin / CLK pin
 
-# Read the last state of CLK pin in the initialisaton phase of the program 
-outA_last = outA.value() # lastStateCLK
+# Read the last state of CLK pin in the initialisaton phase of the program
+outA_last = outA.value()  # lastStateCLK
 
 # Main Logic
+
+
 async def main():
     short_press = pb.release_func(button, ())
     long_press = pb.long_func(buttonlong, ())
-    pin=0
+    pin = 0
     integral = 0
-    lastupdate = utime.time()  
+    lastupdate = utime.time()
     refresh(ssd, True)  # Initialise and clear display.
     wetness = ADC(26)
     lasterror = 0
     # The Tweakable values that will help tune for our use case. TODO: Make accessible via menu on OLED
-    calibratewet=20000 # ADC value for a very wet thing
-    calibratedry=50000 # ADC value for a very dry thing
+    calibratewet = 20000  # ADC value for a very wet thing
+    calibratedry = 50000  # ADC value for a very dry thing
     checkin = 5
     # Stolen From Reddit: In terms of steering a ship:
     # Kp is steering harder the further off course you are,
     # Ki is steering into the wind to counteract a drift
     # Kd is slowing the turn as you approach your course
-    Kp=2   # Proportional term - Basic steering (This is the first parameter you should tune for a particular setup)
-    Ki=0   # Integral term - Compensate for heat loss by vessel
-    Kd=0  # Derivative term - to prevent overshoot due to inertia - if it is zooming towards setpoint this
-          # will cancel out the proportional term due to the large negative gradient
-    output=0
-    offstate=False
+    # Proportional term - Basic steering (This is the first parameter you should tune for a particular setup)
+    Kp = 2
+    Ki = 0   # Integral term - Compensate for heat loss by vessel
+    Kd = 0  # Derivative term - to prevent overshoot due to inertia - if it is zooming towards setpoint this
+    # will cancel out the proportional term due to the large negative gradient
+    output = 0
+    offstate = False
     # PID loop - Default behaviour
     powerup = True
     while True:
         if powerup:
             try:
-                counter=encoder(pin)
+                counter = encoder(pin)
                 # Get wetness
-                imwet=wetness.read_u16()
-                howdry = min(10,max(0,10*(imwet-calibratedry)/(calibratewet-calibratedry))) # linear relationship between ADC and wetness, clamped between 0, 10
+                imwet = wetness.read_u16()
+                # linear relationship between ADC and wetness, clamped between 0, 10
+                howdry = min(10, max(0, 10*(imwet-calibratedry) /
+                             (calibratewet-calibratedry)))
                 print(imwet, howdry)
-                temp = howdry # Wetness
-                displaynum(counter,float(temp))
+                temp = howdry  # Wetness
+                displaynum(counter, float(temp))
                 now = utime.time()
-                dt= now-lastupdate
-                if output<100 and offstate == False and dt > checkin * round(output)/100 :
-                    relaypin = Pin(15, mode = Pin.OUT, value =0 )
-                    offstate= True
+                dt = now-lastupdate
+                if output < 100 and offstate == False and dt > checkin * round(output)/100:
+                    relaypin = Pin(15, mode=Pin.OUT, value=0)
+                    offstate = True
                     utime.sleep(.1)
                 if dt > checkin:
-                    error=counter-temp
+                    error = counter-temp
                     integral = integral + dt * error
                     derivative = (error - lasterror)/dt
                     output = Kp * error + Ki * integral + Kd * derivative
-                    print(str(output)+"= Kp term: "+str(Kp*error)+" + Ki term:" + str(Ki*integral) + "+ Kd term: " + str(Kd*derivative))
-                    output = max(min(100, output), 0) # Clamp output between 0 and 100
+                    print(str(output)+"= Kp term: "+str(Kp*error)+" + Ki term:" +
+                          str(Ki*integral) + "+ Kd term: " + str(Kd*derivative))
+                    # Clamp output between 0 and 100
+                    output = max(min(100, output), 0)
                     print(output)
-                    if output>0:  
-                        relaypin = Pin(15, mode = Pin.OUT, value =1 )
+                    if output > 0:
+                        relaypin = Pin(15, mode=Pin.OUT, value=1)
                         offstate = False
                     else:
-                        relaypin = Pin(15, mode = Pin.OUT, value =0 )
+                        relaypin = Pin(15, mode=Pin.OUT, value=0)
                         offstate = True
                     utime.sleep(.1)
                     lastupdate = now
-                    lasterror = error  
+                    lasterror = error
             except Exception as e:
                 # Put something to output to OLED screen
                 beanaproblem('error.')
                 print('error encountered:'+str(e))
                 utime.sleep(checkin)
         else:
-                refresh(ssd, True)  # Clear any prior image
-                relaypin = Pin(15, mode = Pin.OUT, value =0 )
+            refresh(ssd, True)  # Clear any prior image
+            relaypin = Pin(15, mode=Pin.OUT, value=0)
         await asyncio.sleep(.01)
-        
+
 asyncio.run(main())
-
-
