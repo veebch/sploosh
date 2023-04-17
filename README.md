@@ -8,7 +8,7 @@
 
 A [proportional integral derivative](https://en.wikipedia.org/wiki/PID_controller) (PID) controller that will be used to run a plant waterer. PID is a fancy way of saying that the code plays a game of 'Warmer', 'Colder' to get something to a particular value (in our example, a particular moistness). The internet is littered with examples of these things, so it is mostly a learning exercise that will use a few bits of code we've previously developed, and hopefully it will make us a little smarter along the way. This is a very lightly tweaked version of the code we used for [cooking](https://github.com/veebch/heat-o-matic).
 
-(There's also a bare-bones version in the repository that doesn't use a screen or encoder, and has a target moisture level that can be adjusted by setting a paramater in the code. This lower-power version can be ran from a battery for extended periods of time)
+(There's also a bare-bones version in the repository that doesn't use a screen or encoder, and has a target moisture level that can be adjusted by setting a paramater in the code. This lower-power version can be ran from a battery for extended periods of time. This is the version used in the video)
 
 
 # Hardware
