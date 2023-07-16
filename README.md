@@ -23,30 +23,7 @@ A [proportional integral derivative](https://en.wikipedia.org/wiki/PID_controlle
 
 **Warning: Don't pump water using something that dislikes being power-cycled a lot. This is GPL code, ie NO WARRANTY**
 
-# Installing onto a Pico
-
-First flash the board with the latest version of micropython. 
-
-Then clone this repository onto your computer
-
-     git clone https://github.com/veebch/sploosh
-
-and move into the repository directory
-
-     cd sploosh
-
-If (**and only if**) you are using the bare-bones version (no screen or rotary encoder)
-
-     mv main.py withscreen.py
-     mv barebones.py main.py
-
-There are a few files to copy to the pico, [ampy](https://learn.adafruit.com/micropython-basics-load-files-and-run-code/install-ampy) is a good way to do it.
-
-     ampy -p /dev/ttyACM0 put ./
-     
-substitute the device name to whatever the pico is on your system. 
-
-# Wiring
+## Wiring
 
 All of the pins are listed in main.py. 
 GPIO to peripherals as follows:
@@ -79,6 +56,35 @@ GPIO to peripherals as follows:
 | [Pico GPIO](https://www.elektronik-kompendium.de/sites/raspberry-pi/bilder/raspberry-pi-pico-gpio.png) | Soil Sensor |
 |-----------|----------------|
 |   26       | A0             |
+
+## Enclosure
+
+The stl files for and enclosure are on thingiverse [here](https://www.thingiverse.com/thing:6125748) (Thanks Ryan!).
+
+# Firmware
+
+## Installing onto a Pico
+
+First flash the board with the latest version of micropython. 
+
+Then clone this repository onto your computer
+
+     git clone https://github.com/veebch/sploosh
+
+and move into the repository directory
+
+     cd sploosh
+
+If (**and only if**) you are using the bare-bones version (no screen or rotary encoder)
+
+     mv main.py withscreen.py
+     mv barebones.py main.py
+
+There are a few files to copy to the pico, [ampy](https://learn.adafruit.com/micropython-basics-load-files-and-run-code/install-ampy) is a good way to do it.
+
+     ampy -p /dev/ttyACM0 put ./
+     
+substitute the device name to whatever the pico is on your system. 
 
 # Running
 
