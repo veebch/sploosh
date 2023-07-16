@@ -86,7 +86,7 @@ Plug it in, pop the soil probe into the medium you are going to water, plug the 
 
 # Video
 
-Here's an outline of how it works and a video of it looking after a plant for a week:
+Here's a video outlining how it works and a timelapse of it looking after a plant for a week:
 
 [![Mod demo](http://img.youtube.com/vi/WVijoh-hqkw/0.jpg)](http://www.youtube.com/watch?v=WVijoh-hqkw "Video Title")
 
