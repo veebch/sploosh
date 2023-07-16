@@ -59,7 +59,7 @@ GPIO to peripherals as follows:
 
 ## Enclosure
 
-The stl files for and enclosure are on thingiverse [here](https://www.thingiverse.com/thing:6125748) (Thanks Ryan!).
+The stl files for an enclosure are on thingiverse [here](https://www.thingiverse.com/thing:6125748) (Thanks Ryan!).
 
 # Firmware
 
