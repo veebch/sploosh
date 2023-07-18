@@ -1,8 +1,22 @@
-# main.py - a script for making a plant watering thing, running using a Raspberry Pi Pico
-# First prototype is using an OLED, rotary encoder and a relay switch (linked to water pump device of some sort)
-# The display uses drivers made by Peter Hinch [link](https://github.com/peterhinch/micropython-nano-gui)
+"""
+ main.py - a script for making a plant watering thing, running using a Raspberry Pi Pico
+    First prototype is using an OLED, rotary encoder and a relay switch (linked to water pump device of some sort)
+    The display uses drivers made by Peter Hinch [link](https://github.com/peterhinch/micropython-nano-gui)
+    
+     Copyright (C) 2023 Veeb Projects https://veeb.ch
 
-# Released under the GPL 3.0
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with
 
 # Fonts for Writer (generated using https://github.com/peterhinch/micropython-font-to-py)
 import gui.fonts.freesans20 as freesans20
