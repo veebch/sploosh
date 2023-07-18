@@ -18,9 +18,11 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>
 
+    Fonts for Writer (generated using https://github.com/peterhinch/micropython-font-to-py)
+
 """
 
-# Fonts for Writer (generated using https://github.com/peterhinch/micropython-font-to-py)
+
 import gui.fonts.freesans20 as freesans20
 import gui.fonts.quantico40 as quantico40
 from gui.core.writer import CWriter
