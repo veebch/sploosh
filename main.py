@@ -16,7 +16,9 @@
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with
+    along with this program.  If not, see <https://www.gnu.org/licenses/>
+
+"""
 
 # Fonts for Writer (generated using https://github.com/peterhinch/micropython-font-to-py)
 import gui.fonts.freesans20 as freesans20
