@@ -15,7 +15,7 @@ A [proportional integral derivative](https://en.wikipedia.org/wiki/PID_controlle
 - Raspberry Pi Pico 
 - SSD1351 Waveshare OLED (not needed if you're making the bare bones version)
 - WGCD KY-040 Rotary Encoder (not needed if you're making the bare bones version)
-- A **capacitive** soil-moisture sensor
+- [A **capacitive** soil-moisture sensor](https://www.az-delivery.de/en/products/bodenfeuchte-sensor-modul-v1-2P) 
 - A relay switch
 - A plug socket for the water pump
 - A cheap fish tank water pump
